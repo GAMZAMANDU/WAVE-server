@@ -20,10 +20,14 @@ class UserLogin(BaseModel):
     name: str = Field(..., max_length=255, description="사용자 이름")
     password: str = Field(..., max_length=255, description="사용자 비밀번호")
 
+class HandleOut(BaseModel):
+    id: int
+    controles: str
+
 class UserLoginOut(BaseModel):
     id: int  # 사용자 ID
     name: str  # 사용자 이름
-    handle_config: list[str]
+    handle_config: list[HandleOut]
 
     class Config:
         orm_mode = True

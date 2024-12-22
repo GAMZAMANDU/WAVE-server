@@ -5,7 +5,7 @@ from database import Base
 class User(Base):
     __tablename__ = "users"
     id = mapped_column(Integer, primary_key=True, autoincrement=True)
-    name = mapped_column(String(255), nullable=False)
+    name = mapped_column(String(255), nullable=False, unique=True)
     password = mapped_column(String(255), nullable=False)
 
 class Handle(Base):

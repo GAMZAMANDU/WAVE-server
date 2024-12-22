@@ -15,3 +15,15 @@ class UserOut(BaseModel):
 
     class Config:
         orm_mode = True
+
+class UserLogin(BaseModel):
+    name: str = Field(..., max_length=255, description="사용자 이름")
+    password: str = Field(..., max_length=255, description="사용자 비밀번호")
+
+class UserLoginOut(BaseModel):
+    id: int  # 사용자 ID
+    name: str  # 사용자 이름
+    handle_config: list[str]
+
+    class Config:
+        orm_mode = True

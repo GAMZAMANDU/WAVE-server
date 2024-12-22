@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from crud import create_user, login_user
 from schema import UserCreate, UserOut, UserLogin
 from database import get_db
-
+from fastapi.middleware.cors import CORSMiddleware
 import crud, models, schema
 from database import SessionLocal, engine
 
@@ -11,6 +11,13 @@ models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 ####################### USER #######################
 
 @app.post("/users", response_model=UserOut)

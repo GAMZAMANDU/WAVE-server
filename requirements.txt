@@ -7,3 +7,4 @@ pymysql
 async-generator
 async-exit-stack
 cryptography
+pyjwt

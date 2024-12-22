@@ -4,6 +4,7 @@ import models, schema
 
 from schema import UserCreate, UserLogin, UserLoginOut
 from models import User, Handle
+from jwt_config import create_access_token
 
 ############################ USER ############################
 def create_user(db: Session, user: UserCreate):
@@ -23,9 +24,11 @@ def login_user(db:Session, user:UserLogin):
         )
 
     db_handle = db.query(Handle.id, Handle.controles).filter(Handle.id == db_user.id).all()
+    access_token = create_access_token(data={'sub': db_user.name})
 
     return UserLoginOut(
         id = db_user.id,
         name = db_user.name,
-        handle_config = db_handle
+        handle_config = db_handle,
+        access_token=access_token
     )

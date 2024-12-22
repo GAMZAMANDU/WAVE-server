@@ -24,10 +24,14 @@ class HandleOut(BaseModel):
     id: int
     controles: str
 
+    class Config:
+        orm_mode = True
+
 class UserLoginOut(BaseModel):
     id: int  # 사용자 ID
     name: str  # 사용자 이름
     handle_config: list[HandleOut]
+    access_token : str
 
     class Config:
         orm_mode = True

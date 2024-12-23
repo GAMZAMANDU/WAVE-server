@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from crud import create_user, login_user
-from schema import UserCreate, UserOut, UserLogin
+from schema import UserCreate, UserOut, UserLogin, UserLoginOut
 from database import get_db
 from fastapi.middleware.cors import CORSMiddleware
 import crud, models, schema
@@ -24,6 +24,6 @@ app.add_middleware(
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
   return crud.create_user(db=db, user=user)
 
-@app.post("/login")
+@app.post("/login", response_model=UserLoginOut)
 def get_login(user: UserLogin, db: Session = Depends(get_db)):
   return crud.login_user(db=db, user=user)

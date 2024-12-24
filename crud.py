@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 import models, schema
 
-from schema import UserCreate, UserLogin, UserLoginOut, JWTverify
+from schema import UserCreate, UserLogin, UserLoginRes, JWTverify
 from models import User
 from jwt_config import create_access_token
 from jwt_config import decode_access_token
@@ -57,7 +57,7 @@ def login_user(db:Session, user:UserLogin):
 
     access_token = create_access_token(data={'sub': db_user.name})
     print(">", [*db_user.handler_config])
-    return UserLoginOut(
+    return UserLoginRes(
         id = db_user.id,
         name = db_user.name,
         handler_config = db_user.handler_config,

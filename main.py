@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from crud import create_user, login_user
-from schema import UserCreate, UserOut, UserLogin, UserLoginOut, HandlerOut, JWTverify
+from schema import UserCreate, UserRes, UserLogin, UserLoginRes,JWTverify
 from database import get_db
 from fastapi.middleware.cors import CORSMiddleware
 import crud, models, schema
@@ -21,18 +21,18 @@ app.add_middleware(
 )
 ####################### USER #######################
 
-@app.post("/users", response_model=UserOut)
+@app.post("/users", response_model=UserRes)
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
   return crud.create_user(db=db, user=user)
 
-@app.post("/login", response_model=UserLoginOut)
+@app.post("/login", response_model=UserLoginRes)
 def get_login(user: UserLogin, db: Session = Depends(get_db)):
   return crud.login_user(db=db, user=user)
 
-@app.get("/handler", response_model=HandlerOut)
-def get_handler(data : JWTverify , db: Session = Depends(get_db)):
-  return crud.get_handler(db=db, data=data)
+# @app.get("/run", response_model=runRes)
+# def run(data : JWTverify , db: Session = Depends(get_db)):
+#   return crud.get_handler(db=db, data=data)
 
-@app.get("/test")
-def test(access_token: str):
-  return decode_access_token(access_token)
+# @app.get("/test")
+# def test(access_token: str):
+#   return decode_access_token(access_token)

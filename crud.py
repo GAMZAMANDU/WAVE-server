@@ -2,9 +2,10 @@ from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 import models, schema
 
-from schema import UserCreate, UserLogin, UserLoginOut
+from schema import UserCreate, UserLogin, UserLoginOut, JWTverify
 from models import User
 from jwt_config import create_access_token
+from jwt_config import decode_access_token
 
 default_json = [
     { 
@@ -60,5 +61,17 @@ def login_user(db:Session, user:UserLogin):
         id = db_user.id,
         name = db_user.name,
         handle_config = db_user.handler_config,
-        access_token=access_token
+        access_token = access_token
     )
+
+def get_handler(db:Session, data : JWTverify):
+    payload = decode_access_token(data.access_token)
+    if payload.get('sub') != data.name:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid access token"
+        )
+    
+    handler_config = db.query(User.handler_config).filter(User.name == data.name).first()
+    print(">", handler_config)
+    return { "handler_config" : handler_config}

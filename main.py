@@ -1,11 +1,12 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from crud import create_user, login_user
-from schema import UserCreate, UserOut, UserLogin, UserLoginOut
+from schema import UserCreate, UserOut, UserLogin, UserLoginOut, HandlerOut, JWTverify
 from database import get_db
 from fastapi.middleware.cors import CORSMiddleware
 import crud, models, schema
 from database import SessionLocal, engine
+from jwt_config import decode_access_token
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -27,3 +28,11 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
 @app.post("/login", response_model=UserLoginOut)
 def get_login(user: UserLogin, db: Session = Depends(get_db)):
   return crud.login_user(db=db, user=user)
+
+@app.get("/handler", response_model=HandlerOut)
+def get_handler(data : JWTverify , db: Session = Depends(get_db)):
+  return crud.get_handler(db=db, data=data)
+
+@app.get("/test")
+def test(access_token: str):
+  return decode_access_token(access_token)

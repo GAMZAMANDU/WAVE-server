@@ -35,5 +35,13 @@ class UserLoginOut(BaseModel):
     class Config:
         orm_mode = True
 
+class JWTverify(BaseModel):
+    access_token: str
+    name: str
 
+class HandlerOut (BaseModel):
+    handler_config : List[HandlerConfig]
+
+    class Config:
+        orm_mode = True
 

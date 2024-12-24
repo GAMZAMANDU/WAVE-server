@@ -56,11 +56,11 @@ def login_user(db:Session, user:UserLogin):
         )
 
     access_token = create_access_token(data={'sub': db_user.name})
-
+    print(">", [*db_user.handler_config])
     return UserLoginOut(
         id = db_user.id,
         name = db_user.name,
-        handle_config = db_user.handler_config,
+        handler_config = db_user.handler_config,
         access_token = access_token
     )
 

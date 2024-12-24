@@ -11,30 +11,34 @@ default_json = [
         "hand_id": 0,
         "name": "swipe",
         "icon": "file_open",
-        "content": { "0": "https://www.google.com" }
+        "content": { 0: "https://www.google.com" }
     },
     {
         "hand_id": 1,
         "name": "V",
         "icon": "cancel",
-        "content": { "1": "5min" }
+        "content": { 1: "5min" }
     },
     {
         "hand_id": 2,
         "name": "Index finger",
         "icon": "cancel",
-        "content": { "2": None }
+        "content": { 2: None }
     },
     {
         "hand_id": 3,
         "name": "Three fingers",
         "icon": "add_circle",
-        "content": { "3": None }
+        "content": { 3: None }
     }
 ]
 
 ############################ USER ############################
 def create_user(db: Session, user: UserCreate):
+    existing_user = db.query(User).filter(User.name == user.name).first()
+    if existing_user:
+        raise HTTPException(status_code=400, detail="Username already exists")
+    
     db_user = User(name = user.name, password=user.password, handler_config=default_json)
     db.add(db_user)
     db.commit()

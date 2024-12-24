@@ -29,7 +29,7 @@ class UserLogin(BaseModel):
 class UserLoginOut(BaseModel):
     id: int
     name: str
-    handle_config: List[HandlerConfig]
+    handler_config: List[HandlerConfig] = []
     access_token : str
 
     class Config:
